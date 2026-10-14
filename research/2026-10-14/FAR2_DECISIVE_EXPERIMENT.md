@@ -48,7 +48,7 @@ Randomized within-donor arms: vehicle, reference retinoid, orthogonal FABP5-spec
 Randomize *matching models from the same donors* into pulse and sham conditions. Stop the intervention and verify the agent is cleared using appropriate analytical and functional assays. Assess molecular pathway reversion, cell turnover and maturation.
 - Same standardized environment is maintained in both arms after treatment.
 - Compare repeated, longitudinal morphology, not merely a single endpoint.
-- Culture duration must be biologically sufficient. Existing pluripotent-stem-cell skin organoids can be maintained up to ~150 days in some protocols, but resemble fetal tissue and have not been validated as faithful models of acne comedogenesis (doi:10.1038/s41596-022-00704-w; check final citation before use).
+- Culture duration must be biologically sufficient. Existing pluripotent-stem-cell skin organoids can be maintained up to ~150 days in some protocols, but resemble fetal tissue and have not been validated as faithful models of acne comedogenesis (doi:10.1038/s41596-022-00681-y).
 - If a model cannot remain stable long enough, classify the result as indeterminate rather than a reset.
 
 **Stage D: Reversible switch and hysteresis**
