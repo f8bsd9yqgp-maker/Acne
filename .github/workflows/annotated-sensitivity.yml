@@ -1,0 +1,31 @@
+name: Postprocess annotated cell-type sensitivity
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "research/2026-10-14/annotated_sensitivity_report.py"
+      - "research/2026-10-14/gse301280_annotated_results/annotated_sample_celltype_gene_expression.csv"
+      - ".github/workflows/annotated-sensitivity.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install pandas
+      - run: python research/2026-10-14/annotated_sensitivity_report.py
+      - name: Commit reproducible sensitivity summaries
+        run: |
+          git add research/2026-10-14/gse301280_annotated_results/sensitivity_by_category_celltype.csv \
+                  research/2026-10-14/gse301280_annotated_results/celltype_section_coverage.csv
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Save GSE301280 cell-type and recency sensitivity statistics"
+            git push
+          fi
