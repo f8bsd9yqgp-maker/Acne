@@ -4,6 +4,16 @@
 
 This repository collects the October 14, 2026 acne research investigation, including mechanistic analysis of hormonal, sebaceous, follicular, microbial, genetic and immune factors; the FAR/FAR-2 hypothesis; a hypothetical intervention-space screen; and experimental plans for safety and durable remission.
 
+## Latest research — Round 3 (October 14, 2026)
+
+The third research phase sharpened the central **FAR-2** question: could a patient-derived human follicle retain an improved *functional* state after treatment withdrawal, and how could a slow return to disease be distinguished from genuine multistability?
+
+- [Round 3 mathematical and biological research audit](research/2026-10-14/ROUND3_STATE_IDENTIFIABILITY_AND_MODEL_FEASIBILITY.md)
+- [Reproducible rate-dependent hysteresis diagnostic](research/2026-10-14/state_switch_diagnostic.py)
+- [FAR-2 decisive experiment](research/2026-10-14/FAR2_DECISIVE_EXPERIMENT.md)
+
+**Important:** The hysteresis study is a **synthetic generic dynamical-systems exercise**. It does not represent experimental data about acne, demonstrate a lasting follicular reset, or identify a clinically viable molecule. A bug in the original archive's single-target comparator export has now been fixed in the GitHub code and checked by the automated reproduction workflow.
+
 ## Research direction
 
 1. Explain why similar hormonal and microbial exposure can lead to different acne severity.
