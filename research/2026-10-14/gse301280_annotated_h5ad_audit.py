@@ -52,7 +52,8 @@ def main():
     obskeys=[str(k) for k in columns]
     ct=select_field(obskeys,[r"^bulk_labels$",r"cell.?type",r"cell.?label",r"annotation"])
     sample=select_field(obskeys,[r"^sample$",r"sample.?id",r"^sample_name$",r"section",r"specimen",r"^orig.ident$"])
-    state=select_field(obskeys,[r"^disease_state$",r"^disease$",r"^condition$",r"^disease.*status",r"^lesion",r"^group$"])
+    # Prefer the study's four-way category, not its coarser binary 'lesional' flag.
+    state=select_field(obskeys,[r"^prefix_healthy_label$",r"^disease_state$",r"^disease$",r"^condition$",r"^disease.*status",r"^lesion",r"^group$"])
     donor=select_field(obskeys,[r"^donor(_id)?$",r"^patient(_id)?$",r"^subject(_id)?$",r"individual",r"donor",r"patient",r"subject"])
     keys={"cell_type":ct,"sample":sample,"disease":state,"donor":donor}
     checks["selected_metadata_keys"]=keys
@@ -74,9 +75,23 @@ def main():
     # Keep donor blank if it is absent: sample prefixes are NOT independently confirmed IDs.
     fields={"sample":sample,"cell_type":ct}
     if state:fields["disease"]=state
+    if "new" in obs.columns:fields["is_recent_sample"]= "new"
     if donor:fields["donor"]=donor
     df=pd.DataFrame({new:obs[col].astype("string").fillna("<missing>").astype(str).to_numpy() for new,col in fields.items()})
     df["n_cells"]=1
+    # Crosswalk counts are grouped at sample level. 'new' distinguishes sample
+    # collection-era groups in the public object but is NOT a validated donor ID.
+    sample_labels=[]
+    for col in ["prefix_healthy_label","healthy","lesional","pustule","new","specimen","specimen_id","shifted_specimen"]:
+        if col in obs.columns:
+            raw=obs[col].astype("string").fillna("<missing>").astype(str)
+            co=pd.DataFrame({"sample":df["sample"],"label":raw})
+            tab=co.groupby("sample")["label"].agg(lambda x:"|".join(sorted(x.unique())))
+            sample_labels.append(tab.rename(col))
+    cross=pd.concat(sample_labels,axis=1).reset_index()
+    cross["n_cells"]=df.groupby("sample").size().reindex(cross["sample"]).values
+    cross.to_csv(dest/"sample_label_crosswalk.csv",index=False)
+    print("SAMPLE LABEL CROSSWALK",cross.to_string(index=False),flush=True)
     grouped=df.groupby(list(fields),dropna=False,sort=False).size().reset_index(name="n_cells")
     grouped.to_csv(dest/"annotated_cell_composition.csv",index=False)
     # Summarize cell-type labels, sample counts and disease categories, without retaining patient data.
