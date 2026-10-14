@@ -40,9 +40,7 @@ jobs:
       - name: Commit small derived metadata and expression summaries
         if: always()
         run: |
-          git add research/2026-10-14/gse301280_annotated_results/*.json \
-                  research/2026-10-14/gse301280_annotated_results/*.csv \
-                  research/2026-10-14/gse301280_annotated_results/BLOCKER.txt || true
+          git add research/2026-10-14/gse301280_annotated_results/ || true
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Add GEO full annotated h5ad cellular metadata and descriptive results"
             git push
