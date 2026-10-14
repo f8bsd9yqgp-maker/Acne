@@ -115,7 +115,12 @@ def main():
     family.head(25).to_csv(OUT/'top_25_distinct_target_combinations.csv',index=False)
     # Single target high-level signal and flags.
     single = df.loc[df['number_of_targets']==1]
-    single_best = single.sort_values('screen_score',ascending=False).drop_duplicates(TARGETS).head(20)
+    # One strongest tested intensity per target (previous code deduplicated the entire
+    # dose vector, accidentally including many repeated doses of only a few targets).
+    single = single.copy()
+    single['target'] = [TARGETS[int(np.flatnonzero(row)[0])] for row in c[num_targets==1]]
+    single_best = single.sort_values('screen_score',ascending=False).drop_duplicates('target')
+    assert len(single_best) == len(TARGETS)
     single_best.to_csv(OUT/'single_target_comparators.csv',index=False)
     summary={
         'screened_interventions':n, 'safe_interventions':int(safe.sum()),
