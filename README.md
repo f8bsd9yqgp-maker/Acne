@@ -4,6 +4,16 @@
 
 This repository collects the October 14, 2026 acne research investigation, including mechanistic analysis of hormonal, sebaceous, follicular, microbial, genetic and immune factors; the FAR/FAR-2 hypothesis; a hypothetical intervention-space screen; and experimental plans for safety and durable remission.
 
+## Latest research — Round 6: cause, consequence or feedback? (October 14, 2026)
+
+The project now separates genuine experimental evidence from gene-expression association. GATA6 already has **human follicular differentiation perturbation evidence**; direct FABP5 causality in human acne is still unresolved. Retinoid signaling through FABP5 depends on fatty-acid context and reports differ across keratinocyte systems, so a naive 'always suppress FABP5' conclusion is not justified.
+
+- [Round 6 causal literature audit, analysis, and decisive factorial research design](research/2026-10-14/ROUND6_GATA6_FABP5_CAUSALITY_ATTACK.md)
+- [Reproducible leave-one-section-out human-data analysis](research/2026-10-14/round6_causal_signature_robustness.py)
+- [Section-level descriptive robustness results](research/2026-10-14/gse301280_annotated_results/round6_section_level_robustness.csv)
+
+**No causality from the uploaded human tissue cohort has been proved.** Without a confirmed donor crosswalk, even stable section-level comparisons cannot be taken as independent-patient statistical evidence.
+
 ## Latest research — Round 5: original annotated human dataset (October 14, 2026)
 
 Reanalyzed the **full 757.9 MB GSE301280 annotated h5ad**, recovering 258,965 filtered cells, 15 published cell-type annotations, and 24 tissue sections. The full annotated labels reproduce **5 healthy, 9 nonlesional, 7 comedonal and 3 pustular** sections; the raw GEO title-count discrepancy requires further title-to-annotation mapping.
