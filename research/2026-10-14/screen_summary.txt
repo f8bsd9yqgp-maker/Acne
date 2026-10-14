@@ -1,0 +1,7 @@
+screened_interventions: 102631
+safe_interventions: 65833
+safe_share: 0.6414533620446065
+best_score: 0.4880463581085205
+best_mean_reduction: 0.590030312538147
+best_worst_reduction: 0.5674413442611694
+best_family: lipid_quality + ductal_identity + GehA_neutralization + inflammation_resolution
