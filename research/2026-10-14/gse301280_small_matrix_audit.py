@@ -90,17 +90,30 @@ def read_matrix(path):
         mat=csc_matrix((m["data"][()],m["indices"][()],m["indptr"][()]),shape=shape)
         totals=np.asarray(mat.sum(axis=0)).ravel().astype(float)
         rows=[]
+        # Marker-positive gates are sensitivity checks, NOT validated cell annotations.
+        masks={}
+        for marker in ["KRT5","KRT79"]:
+            if marker in names:
+                masks[marker]=mat.getrow(names.index(marker)).toarray().ravel()>0
+            else: masks[marker]=np.zeros(shape[1],dtype=bool)
         for gene in GENES:
             idx=[j for j,g in enumerate(names) if g==gene]
             if not idx:
-                rows.append(dict(gene=gene,present_in_panel=False,mean_log1p_cptt=None,fraction_detected=None,mean_raw_umi=None))
+                rows.append(dict(gene=gene,present_in_panel=False,
+                      mean_log1p_cptt=None,fraction_detected=None,mean_raw_umi=None))
                 continue
             if len(idx)!=1:raise RuntimeError("Duplicate gene: "+gene)
             x=mat.getrow(idx[0]).toarray().ravel().astype(float)
-            rows.append(dict(gene=gene,present_in_panel=True,
-                  mean_log1p_cptt=float(np.mean(np.log1p(10000*x/np.maximum(totals,1)))),
-                  fraction_detected=float(np.mean(x>0)),
-                  mean_raw_umi=float(np.mean(x))))
+            log_norm=np.log1p(10000*x/np.maximum(totals,1))
+            data=dict(gene=gene,present_in_panel=True,
+                      mean_log1p_cptt=float(np.mean(log_norm)),
+                      fraction_detected=float(np.mean(x>0)),
+                      mean_raw_umi=float(np.mean(x)))
+            for marker,mask in masks.items():
+                data["n_"+marker+"_positive_cells"]=int(mask.sum())
+                data["mean_log1p_in_"+marker+"_positive"]=float(np.mean(log_norm[mask])) if mask.any() else None
+                data["detection_in_"+marker+"_positive"]=float(np.mean(x[mask]>0)) if mask.any() else None
+            rows.append(data)
         return shape[0],shape[1],rows
 
 def main():
@@ -144,6 +157,19 @@ def main():
                       mean_section_expression=("mean_log1p_cptt","mean"),
                       median_detection_fraction=("fraction_detected","median")))
         summary.to_csv(out/"category_gene_expression.csv",index=False)
+        # Unbiased ALL-CELL analysis above remains primary descriptive result.
+        # These gates only check for gross cell-mixture confounding; KRT5/KRT79
+        # positivity changes with cell state and does not prove cell identity.
+        present=df[df.present_in_panel].copy()
+        gated=(present.groupby(["category","gene"],as_index=False)
+          .agg(n_sections=("gsm","nunique"),
+               median_KRT5_positive_expression=("mean_log1p_in_KRT5_positive","median"),
+               median_KRT79_positive_expression=("mean_log1p_in_KRT79_positive","median"),
+               median_KRT5_positive_detection=("detection_in_KRT5_positive","median"),
+               median_KRT79_positive_detection=("detection_in_KRT79_positive","median")))
+        gated.to_csv(out/"category_marker_gated_sensitivity.csv",index=False)
+        for g in ("GATA6","FABP5","CRABP2"):
+            print("MARKER GATES",g,gated[gated.gene==g].to_dict("records"),flush=True)
         print("PANEL PRESENCE AND SECTION-LEVEL MEDIANS; NOT INDEPENDENT DONOR TESTS",flush=True)
         for gene in ("GATA6","FABP5","CRABP2"):
             print(gene,summary[summary.gene==gene].to_dict("records"),flush=True)
