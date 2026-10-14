@@ -1,0 +1,25 @@
+sample,prefix_healthy_label,healthy,lesional,pustule,new,specimen,specimen_id,shifted_specimen,n_cells
+0,Healthy,True,False,False,True,0,19,19,9024
+1,Healthy,True,False,False,True,1,20,20,9107
+10,Acne Pustule,False,True,True,True,6,6,6,26006
+11,Acne Non-lesional,False,False,False,True,7,7,7,18209
+12,Acne Non-lesional,False,False,False,True,8,8,8,17033
+13,Acne Pustule,False,True,True,True,9,9,9,14654
+14,Acne Non-lesional,False,False,False,True,10,10,10,10903
+15,Acne Comedo,False,True,False,True,11,11,11,8278
+16,Acne Comedo,False,True,False,True,12,12,12,5952
+17,Acne Comedo,False,True,False,True,13,13,13,9673
+18,Acne Non-lesional,False,False,False,True,14,14,14,6769
+19,Acne Comedo,False,True,False,True,15,15,15,9111
+2,Healthy,True,False,False,True,2,21,21,9885
+20,Acne Pustule,False,True,True,True,16,16,16,24539
+21,Acne Non-lesional,False,False,False,True,17,17,17,5604
+22,Acne Non-lesional,False,False,False,True,18,18,18,6543
+23,Healthy,True,False,False,True,4,23,23,4576
+3,Healthy,True,False,False,True,3,22,22,11047
+4,Acne Non-lesional,False,False,False,False,0,0,0,3948
+5,Acne Non-lesional,False,False,False,False,1,1,1,3541
+6,Acne Non-lesional,False,False,False,False,2,2,2,6939
+7,Acne Comedo,False,True,False,False,3,3,3,13086
+8,Acne Comedo,False,True,False,False,4,4,4,12829
+9,Acne Comedo,False,True,False,False,5,5,5,11709

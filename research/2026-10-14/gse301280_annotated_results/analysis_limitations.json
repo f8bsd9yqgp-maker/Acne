@@ -3,7 +3,7 @@
   "donor_mapping": "UNAVAILABLE: no independently verified donor key; do not infer from sample title",
   "sample_key": "sample",
   "celltype_key": "bulk_labels",
-  "disease_key": "lesional",
+  "disease_key": "prefix_healthy_label",
   "note": "Descriptive means of deposited annotated matrix X. X could be normalized/log transformed; review dataset provenance. Samples from same donor may be correlated. No donor-level p-values or causal conclusions.",
   "n_cells": 258965,
   "n_features": 100,
