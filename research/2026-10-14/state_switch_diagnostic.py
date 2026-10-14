@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp
+from scipy.integrate import solve_ivp, trapezoid
 
 OUT = Path(__file__).resolve().parent
 SWITCH = 2.0/(3.0*np.sqrt(3))  # cubic saddle-node input magnitude
@@ -31,7 +31,7 @@ def ramp_area(model, duration, tau=15.0):
     initial = h_low if model == 'slow_monostable' else equilibria(h_low)[0]
     h_up, x_up = integrate_leg(model, h_low, h_high, duration, initial, tau)
     _, x_down = integrate_leg(model, h_high, h_low, duration, x_up[-1], tau)
-    area = float(abs(np.trapezoid(x_up-x_down[::-1], h_up)))
+    area = float(abs(trapezoid(x_up-x_down[::-1], h_up)))
     return area, (h_up, x_up, x_down[::-1])
 
 def post_washout_separation(model, t, tau=100.):
