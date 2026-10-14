@@ -64,6 +64,23 @@ Source: [round7_partial_donor_identification.py](round7_partial_donor_identifica
 
 This approach is an extension of partial-identification/bounds logic, **not a new general mathematical theorem**. It doesn't replace knowing the donor crosswalk, and conditions such as same donor/site matter for future causal interpretation.
 
+### Extended sensitivity: all three paired donors (2,160 assignments)
+
+The analysis above was intentionally restricted to recent samples, but **Table S1 also identifies patient 7 as a paired archival donor** (one N, three C). All three archived C sections must belong to that patient, but any of the three archival N sections could be their baseline. Adding those **three** possible choices to the 720 recent assignments yields **2,160** arrangements respecting the source's donor-category counts. We calculate the **equal-donor mean** over patients 7, 12 and 13.
+
+| Cell type | Target | Minimum possible three-donor average C−N | Maximum possible | Sign across every compatible mapping? |
+|---|---|---:|---:|---|
+| Basal keratinocytes | GATA6 | -0.04221 | **+0.01122** | **NO** — previous two-donor GATA6 sign claim does not survive |
+| Basal keratinocytes | FABP5 | +0.03378 | +0.22269 | **YES, positive** |
+| Transitional keratinocytes | GATA6 | -0.07663 | +0.01598 | NO |
+| Transitional keratinocytes | FABP5 | +0.28128 | +0.83827 | **YES, positive** |
+| Basal keratinocytes | CRABP2 | -0.03158 | +0.00312 | NO |
+| Hair-follicle keratinocytes | FABP5 | +0.03940 | +0.73259 | YES mathematically, but the cell-count sparsity makes that comparison weaker |
+
+This is the **more comprehensive donor-uncertainty sensitivity**; it materially qualifies the two-recent-donor result. The exact code is [round7_three_donor_bounds.py](round7_three_donor_bounds.py), and output is `gse301280_annotated_results/round7_three_donor_partial_identification.csv`.
+
+**No true donor crosswalk was guessed.** These are sharp extrema for the defined sample-summary contrast under known count constraints. Because archival sections have lower transcript capture than recent samples, mixing donors in the displayed *donor-average* also changes the measurement scale; the comparison can indicate sign robustness but is not a precise pooled biological effect. Differences in biopsy site, unidentified donor covariates, bias from the clustering/classification procedure, or model scaling can all remain. Nor can the analysis determine whether FABP5 elevation precedes lesions or follows them.
+
 ## 3. An experimentally usable morphology model ALREADY exists
 
 The apparently missing morphologic model is not wholly absent. **Guy, Green and Kealey (1996, J Invest Dermatol 106:176–182; doi:10.1111/1523-1747.ep12329907)** microdissected human sebaceous pilosebaceous infundibula and maintained them structurally for 7 days. They reported:
