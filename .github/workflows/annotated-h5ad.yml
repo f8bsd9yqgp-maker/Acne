@@ -1,0 +1,62 @@
+name: GSE301280 full annotated h5ad reanalysis
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "research/2026-10-14/gse301280_annotated_h5ad_audit.py"
+      - ".github/workflows/annotated-h5ad.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  annotations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install scientific packages
+        run: python -m pip install "anndata>=0.10,<0.13" "h5py>=3.9" "numpy<3" scipy pandas requests
+      - name: Download exact 758 MB GEO annotation file
+        run: |
+          mkdir -p /tmp/acne-geo
+          curl --retry 3 --retry-delay 3 --fail --location --silent --show-error \
+               --max-time 1100 \
+               --output /tmp/acne-geo/annotated.h5ad \
+               "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE301nnn/GSE301280/suppl/GSE301280_anndata_global_6_29_25.h5ad"
+          stat -c '%s bytes retrieved' /tmp/acne-geo/annotated.h5ad
+          test $(stat -c '%s' /tmp/acne-geo/annotated.h5ad) -gt 100000000
+      - name: Audit original cell-type annotations and donor/sample metadata
+        id: audit
+        continue-on-error: true
+        run: |
+          python research/2026-10-14/gse301280_annotated_h5ad_audit.py \
+            --h5ad /tmp/acne-geo/annotated.h5ad \
+            --out research/2026-10-14/gse301280_annotated_results
+      - name: Commit small derived metadata and expression summaries
+        if: always()
+        run: |
+          git add research/2026-10-14/gse301280_annotated_results/*.json \
+                  research/2026-10-14/gse301280_annotated_results/*.csv \
+                  research/2026-10-14/gse301280_annotated_results/BLOCKER.txt || true
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Add GEO full annotated h5ad cellular metadata and descriptive results"
+            git push
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gse301280-full-annotated-h5ad-analysis
+          path: |
+            research/2026-10-14/gse301280_annotated_results/*.json
+            research/2026-10-14/gse301280_annotated_results/*.csv
+            research/2026-10-14/gse301280_annotated_results/BLOCKER.txt
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Require successful audit
+        if: steps.audit.outcome != 'success'
+        run: exit 1
