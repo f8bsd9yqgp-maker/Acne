@@ -57,7 +57,7 @@ def main():
     for typ in TYPES:
         for gene in GENES:
             q=recent[(recent.cell_type==typ)&(recent.gene==gene)]
-            assert not q.sample.duplicated().any(),(typ,gene)
+            assert not q["sample"].duplicated().any(),(typ,gene)
             sig=dict(zip(q["sample"],q["mean_anndata_X"]))
             cov=dict(zip(q["sample"],q["n_cells"]))
             if any(v not in sig for v in non+com):continue
