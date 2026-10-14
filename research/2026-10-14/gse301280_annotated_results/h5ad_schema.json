@@ -1077,7 +1077,7 @@
   "selected_metadata_keys": {
     "cell_type": "bulk_labels",
     "sample": "sample",
-    "disease": "lesional",
+    "disease": "prefix_healthy_label",
     "donor": null
   }
 }
