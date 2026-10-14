@@ -6,6 +6,7 @@ on:
     paths:
       - "research/2026-10-14/screen.py"
       - "research/2026-10-14/sensitivity.py"
+      - "research/2026-10-14/state_switch_diagnostic.py"
       - "requirements.txt"
       - ".github/workflows/reproduce-screen.yml"
 
@@ -27,6 +28,13 @@ jobs:
         run: |
           python screen.py
           python sensitivity.py
+          python state_switch_diagnostic.py
+          python - <<'PY'
+          import pandas as pd
+          f = pd.read_csv('single_target_comparators.csv')
+          assert len(f)==8 and f['target'].nunique()==8
+          print('One top comparator for each of 8 targets: PASS')
+          PY
       - name: Publish model outputs as downloadable artifacts
         uses: actions/upload-artifact@v4
         with:
