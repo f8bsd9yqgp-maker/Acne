@@ -6,6 +6,7 @@ on:
     paths:
       - "research/2026-10-14/annotated_sensitivity_report.py"
       - "research/2026-10-14/round6_causal_signature_robustness.py"
+      - "research/2026-10-14/round7_partial_donor_identification.py"
       - "research/2026-10-14/gse301280_annotated_results/annotated_sample_celltype_gene_expression.csv"
       - ".github/workflows/annotated-sensitivity.yml"
 
@@ -23,11 +24,13 @@ jobs:
       - run: python -m pip install pandas numpy
       - run: python research/2026-10-14/annotated_sensitivity_report.py
       - run: python research/2026-10-14/round6_causal_signature_robustness.py
+      - run: python research/2026-10-14/round7_partial_donor_identification.py
       - name: Commit reproducible sensitivity summaries
         run: |
           git add research/2026-10-14/gse301280_annotated_results/sensitivity_by_category_celltype.csv \
                   research/2026-10-14/gse301280_annotated_results/celltype_section_coverage.csv \
-                  research/2026-10-14/gse301280_annotated_results/round6_section_level_robustness.csv
+                  research/2026-10-14/gse301280_annotated_results/round6_section_level_robustness.csv \
+                  research/2026-10-14/gse301280_annotated_results/round7_donor_uncertainty_bounds.csv
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Save GSE301280 cell-type and recency sensitivity statistics"
             git push
