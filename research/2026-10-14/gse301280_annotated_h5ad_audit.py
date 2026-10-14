@@ -84,9 +84,9 @@ def main():
     sample_labels=[]
     for col in ["prefix_healthy_label","healthy","lesional","pustule","new","specimen","specimen_id","shifted_specimen"]:
         if col in obs.columns:
-            raw=obs[col].astype("string").fillna("<missing>").astype(str)
-            co=pd.DataFrame({"sample":df["sample"],"label":raw})
-            tab=co.groupby("sample")["label"].agg(lambda x:"|".join(sorted(x.unique())))
+            raw=obs[col].astype("string").fillna("<missing>").astype(str).to_numpy()
+            co=pd.DataFrame({"sample":df["sample"].to_numpy(),"label":raw})
+            tab=co.groupby("sample")["label"].agg(lambda x:"|".join(sorted(map(str,x.unique()))))
             sample_labels.append(tab.rename(col))
     cross=pd.concat(sample_labels,axis=1).reset_index()
     cross["n_cells"]=df.groupby("sample").size().reindex(cross["sample"]).values
