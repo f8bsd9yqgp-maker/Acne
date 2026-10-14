@@ -4,6 +4,17 @@
 
 This repository collects the October 14, 2026 acne research investigation, including mechanistic analysis of hormonal, sebaceous, follicular, microbial, genetic and immune factors; the FAR/FAR-2 hypothesis; a hypothetical intervention-space screen; and experimental plans for safety and durable remission.
 
+## Latest research — Round 4: actual human acne transcript counts (October 14, 2026)
+
+The repository now includes an independent descriptive analysis of **all 24 public Xenium cell-feature matrices** in NCBI GEO GSE301280 (345,897 recorded cells, 541 matrix features per sample). We identified a public GEO title-count mismatch versus the paper's stated healthy/nonlesional counts and found that restricting expression to marker-detected cells changes apparent FABP5/CRABP2 patterns markedly.
+
+- [Human-data audit with exact group summaries and caveats](research/2026-10-14/ROUND4_GSE301280_PRIMARY_DATA_AUDIT.md)
+- [Reproducible GEO downloader and counts analysis](research/2026-10-14/gse301280_small_matrix_audit.py)
+- [Derived public data (sample and group CSVs)](research/2026-10-14/gse301280_results)
+- [Successful independent GitHub Actions run](https://github.com/f8bsd9yqgp-maker/Acne/actions/runs/38644879207)
+
+**Limits:** This is not a donor-level significance test, a validated cellular-identity analysis, treatment trial, drug discovery or cure. It requires reconciliation with the annotated h5ad and original donor metadata.
+
 ## Latest research — Round 3 (October 14, 2026)
 
 The third research phase sharpened the central **FAR-2** question: could a patient-derived human follicle retain an improved *functional* state after treatment withdrawal, and how could a slow return to disease be distinguished from genuine multistability?
