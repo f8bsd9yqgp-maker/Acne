@@ -4,6 +4,18 @@
 
 This repository collects the October 14, 2026 acne research investigation, including mechanistic analysis of hormonal, sebaceous, follicular, microbial, genetic and immune factors; the FAR/FAR-2 hypothesis; a hypothetical intervention-space screen; and experimental plans for safety and durable remission.
 
+## Latest research — Round 5: original annotated human dataset (October 14, 2026)
+
+Reanalyzed the **full 757.9 MB GSE301280 annotated h5ad**, recovering 258,965 filtered cells, 15 published cell-type annotations, and 24 tissue sections. The full annotated labels reproduce **5 healthy, 9 nonlesional, 7 comedonal and 3 pustular** sections; the raw GEO title-count discrepancy requires further title-to-annotation mapping.
+
+- [Full Round 5 human-data report](research/2026-10-14/ROUND5_ANNOTATED_HUMAN_CELLTYPE_REANALYSIS.md)
+- [Reproducible full-data backed-reader](research/2026-10-14/gse301280_annotated_h5ad_audit.py)
+- [Sample-by-cell-type source-derived summaries and coverage audits](research/2026-10-14/gse301280_annotated_results)
+- [Reproducible sensitivity script](research/2026-10-14/annotated_sensitivity_report.py)
+- [Successful full-file processing](https://github.com/f8bsd9yqgp-maker/Acne/actions/runs/38645873697) and [successful sensitivity tests](https://github.com/f8bsd9yqgp-maker/Acne/actions/runs/38646147308)
+
+**Crucial limits:** GATA6/FABP5 patterns remain descriptive, already broadly described by the original study, and do not establish a durable acne reset. Donor identity is not present in a verified field, so these results have no donor-level significance tests. Many active-lesion sections have extremely sparse annotated sebocytes; do not rely on sebocyte trends.
+
 ## Latest research — Round 4: actual human acne transcript counts (October 14, 2026)
 
 The repository now includes an independent descriptive analysis of **all 24 public Xenium cell-feature matrices** in NCBI GEO GSE301280 (345,897 recorded cells, 541 matrix features per sample). We identified a public GEO title-count mismatch versus the paper's stated healthy/nonlesional counts and found that restricting expression to marker-detected cells changes apparent FABP5/CRABP2 patterns markedly.
