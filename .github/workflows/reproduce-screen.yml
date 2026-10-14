@@ -1,0 +1,38 @@
+name: Reproduce conceptual intervention screen
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "research/2026-10-14/screen.py"
+      - "research/2026-10-14/sensitivity.py"
+      - "requirements.txt"
+      - ".github/workflows/reproduce-screen.yml"
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Reproduce model outputs
+        working-directory: research/2026-10-14
+        run: |
+          python screen.py
+          python sensitivity.py
+      - name: Publish model outputs as downloadable artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: conceptual-acne-screen-2026-10-14
+          path: |
+            research/2026-10-14/*.csv
+            research/2026-10-14/*.png
+            research/2026-10-14/screen_summary.txt
+          retention-days: 90
