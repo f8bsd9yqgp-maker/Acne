@@ -4,6 +4,17 @@
 
 This repository collects the October 14, 2026 acne research investigation, including mechanistic analysis of hormonal, sebaceous, follicular, microbial, genetic and immune factors; the FAR/FAR-2 hypothesis; a hypothetical intervention-space screen; and experimental plans for safety and durable remission.
 
+## Latest research — Round 7: donor mapping uncertainty and a real human duct assay (October 14, 2026)
+
+We recovered Durgin et al.'s original **Supplement Table S1** (11 donors; 24 sections), then avoided pretending the deposited h5ad contained patient IDs. Exact enumeration of all **2,160 compatible sample-to-donor assignments** proved that the defined equal-donor C−N expression contrast for **FABP5 in basal and transitional keratinocytes stays positive**; the GATA6 sign need not remain negative after including the archival paired donor. These are descriptive identification bounds, not clinical outcomes, statistical significance, or causality.
+
+We also identified a relevant prior human histological model: Guy, Green and Kealey (1996) induced **comedone-like hypercornification** in seven-day organ culture of isolated human infundibula and blocked it with IL-1 receptor antagonism. This offers a plausible first-stage morphology model for institutional experimental GATA6/FABP5 validation, not a clinical acne cure or suitable proof of prolonged remission.
+
+- [Round 7 original research, evidence and staged experimental plan](research/2026-10-14/ROUND7_DONOR_BOUNDS_AND_HUMAN_INFUNDIBULUM_EXPERIMENT.md)
+- [Exact 720 recent-donor assignments](research/2026-10-14/round7_partial_donor_identification.py) and [2,160 three-donor assignments](research/2026-10-14/round7_three_donor_bounds.py)
+- [Verified assignment-bound outputs](research/2026-10-14/gse301280_annotated_results/round7_three_donor_partial_identification.csv)
+- [Passing reproducibility workflow](https://github.com/f8bsd9yqgp-maker/Acne/actions/runs/38647810738)
+
 ## Latest research — Round 6: cause, consequence or feedback? (October 14, 2026)
 
 The project now separates genuine experimental evidence from gene-expression association. GATA6 already has **human follicular differentiation perturbation evidence**; direct FABP5 causality in human acne is still unresolved. Retinoid signaling through FABP5 depends on fatty-acid context and reports differ across keratinocyte systems, so a naive 'always suppress FABP5' conclusion is not justified.
