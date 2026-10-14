@@ -3,7 +3,7 @@ This script analyzes PUBLIC GEO data, but cannot infer donor identity or causal 
 Use Python 3.11: pip install requests pandas numpy scipy h5py
 """
 import argparse
-import re
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin
 from collections import Counter
@@ -56,7 +56,16 @@ def category(label):
 def geo_h5_url(gsm, sess):
     base=f"https://ftp.ncbi.nlm.nih.gov/geo/samples/{gsm[:-3]}nnn/{gsm}/suppl/"
     r=sess.get(base,timeout=45);r.raise_for_status()
-    paths=re.findall(r'href\\s*=\\s*["\\\']([^"\\\']+\\.h5(?:\\?[^"\\\']*)?)["\\\']',r.text,re.I)
+    class Links(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.urls=[]
+        def handle_starttag(self, tag, attrs):
+            if tag == 'a':
+                self.urls.extend(v for k,v in attrs if k=='href')
+    parser=Links()
+    parser.feed(r.text)
+    paths=parser.urls
     candidates=[p.split("?")[0] for p in paths if "cell_feature_matrix.h5" in p]
     if len(candidates)!=1: raise RuntimeError(f"{gsm}: expected exactly 1 H5 listing; found {candidates!r} at {base}")
     return urljoin(base,unquote(candidates[0]))
