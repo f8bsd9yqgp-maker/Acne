@@ -1,0 +1,49 @@
+name: GSE301280 public Xenium matrix audit
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "research/2026-10-14/gse301280_small_matrix_audit.py"
+      - ".github/workflows/geo-primary-counts.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install scientific packages
+        run: python -m pip install numpy pandas scipy h5py requests
+      - name: Download public GEO cell-feature matrices and compute descriptions
+        id: analysis
+        continue-on-error: true
+        run: |
+          python research/2026-10-14/gse301280_small_matrix_audit.py --download --out research/2026-10-14/gse301280_results
+      - name: Publish small derived data files to repository
+        run: |
+          mkdir -p research/2026-10-14/gse301280_results
+          git add research/2026-10-14/gse301280_results/*.csv research/2026-10-14/gse301280_results/errors.txt || true
+          if ! git diff --staged --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Save reproducible GSE301280 section-level audit outputs"
+            git push
+          fi
+      - name: Attach original analysis files for verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gse301280-descriptive-analysis
+          if-no-files-found: warn
+          path: |
+            research/2026-10-14/gse301280_results/*.csv
+            research/2026-10-14/gse301280_results/errors.txt
+          retention-days: 30
+      - name: Fail visibly when matrices are unavailable or incomplete
+        if: steps.analysis.outcome != 'success'
+        run: exit 1
